@@ -10,84 +10,137 @@
 
         <!-- CDNs -->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.6.0/p5.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.2/p5.min.js" integrity="sha512-1YMgn4j8cIL91s14ByDGmHtBU6+F8bWOMcF47S0cRO3QNm8SKPNexy4s3OCim9fABUtO++nJMtcpWbINWjMSzQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/prism.min.js" integrity="sha512-UOoJElONeUNzQbbKQbjldDf9MwOHqxNz49NNJJ1d90yp+X9edsHyJoAs6O4K19CZGaIdjI5ohK+O2y5lBTW6uQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/components/prism-javascript.min.js" integrity="sha512-yvw5BDA/GQu8umskpIOBhX2pDLrdOiriaK4kVxtD28QEGLV5rscmCfDjkrx52tIgzLgwzs1FsALV6eYDpGnEkQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-        <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/9000.0.1/themes/prism-twilight.min.css" integrity="sha512-6rkEt5SymQMcnlRz1dHwAMSfMnDaFX28qdr3wyaa+XRCR8dTSWE4U6vjiTVuB6Mq9FgYOLVOTk0lrOeCnodcgA==" crossorigin="anonymous" referrerpolicy="no-referrer" /> -->
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/themes/prism.min.css" rel="stylesheet">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.23.0/prism.min.js"></script>
 
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="/SimulationLabs/Stylesheets/Default.css" rel="stylesheet">
 
         <!-- Simulations -->
         <script src="/SimulationLabs/Scripts/Boids/Boids.js" defer></script>
-        
+        <script src="/SimulationLabs/Scripts/Boids/Circles1.js" defer></script>
+        <script src="/SimulationLabs/Scripts/Boids/Circles2.js" defer></script>
     </head>
 
     <body>
         {% include HeaderBar.html %}
 
-        <!-- Page content -->
-        <p> This is the boids page </p>
-        
-        <h2> Contents </h2>
+        <div class="section">
+            <!-- Page content -->
+            <p> This is the boids page </p>
+            
+            <h2> Contents </h2>
 
-        <ul>
-            <p> There's probably a bootstrap component for this... </p>
-        </ul>
+            <ul>
+                <p> There's probably a bootstrap component for this... </p>
+            </ul>
 
-        <h2> What you'll create </h2>
+            <h2> What you'll create </h2>
 
-        <div id="BoidContainer"></div>
+            <div id="BoidContainer"></div>
 
-        <emph> (This is not an actual boids sketch btw - this is a random stepper) </emph>
+            <emph> (This is not an actual boids sketch btw - this is a random stepper) </emph>
 
-        <h2> Prereqs </h2>
+            <h2> Prereqs </h2>
 
-        <ul> Know how to program using a procedural language e.g. Python, Java, C#, JavaScript etc. </ul>
-        <ul> Basic OOP i.e. you know what a class is </ul>
+            <ul> Know how to program using a procedural language e.g. Python, Java, C#, JavaScript etc. </ul>
+            <ul> Basic OOP i.e. you know what a class is </ul>
 
-        <p> We will be coding in JavaScript but don't worry about knowing the ins and outs of the language; you should be able to pick it up as we go! </p>
+            <p> We will be coding in JavaScript but don't worry about knowing the ins and outs of the language; you should be able to pick it up as we go! </p>
 
-        <h2> Introduction to p5.js </h2>
-        
-        We will be using JavaScript and a library called <strong> p5.js</strong>, made by the lovely <a href="https://processingfoundation.org/"> Processing Foundation</a>.
-        
-        <ol>
-            <li> <p>To get started, create an account for the <a href="https://editor.p5js.org/signup">web editor</a>.  </p> </li>
-            <li> <p> Open a new sketch (File->New) </p> </li>
-        </ol>
-        
-        <p> Your new sketch should have 2 functions: </p>
+            <h2> Introduction to p5.js </h2>
+            
+            We will be using JavaScript and a library called <strong> p5.js</strong>, made by the lovely <a href="https://processingfoundation.org/"> Processing Foundation</a>.
+            
+            <ol>
+                <li> <p>To get started, create an account for the <a href="https://editor.p5js.org/signup">web editor</a>.  </p> </li>
+                <li> <p> Open a new sketch (File->New) </p> </li>
+            </ol>
+            
+            <p> Your new sketch should have 2 functions: </p>
+            
+            <ul>
+                <li> <strong> setup() </strong> which is a function executed once at the start </li>
+                <li> <strong> draw() </strong> which is a function executed every frame (by default, about 60 times a second) </li>
+            </ul>
 
-        
-        <pre>
-            <code class="language-js">
-                console.log('hello world');
-            </code>
-        </pre>
+            We create the canvas (arguments being the width and length) in <strong> setup() </strong> since we only need to do this once, and draw background (which you can call with RGB colour arguments as below) is called every frame in <strong> draw()</strong>! 
 
-        <h3> Task </h3>
+            <pre>
+                <code class="language-js">
+function draw() {
+    redV = 128
+    greenV = 12
+    blueV = 128 
+    background(redV, greenV, blueV); // my favourite colour; purple!
+}
+                </code>
+            </pre>
 
-        
-        <h2> Autonomous Agents Intro </h2>
+            This difference matters when it comes to sketches with changing elements. See the difference in the following sketch, where we draw a circle at the mouse's position every frame. 
 
-        <p> Applying forces, basic goals </p>
+            <h3> Circles 1 - Background Drawn Once </h3>
+            
+            <div id="Circles1Container"></div>
 
-        <h2> Creating boid flocks </h2>
+            <pre>
+                <code class="language-js">
+function setup() {
+    createCanvas(400, 400);
+    background(222, 222, 222);
+}
 
-        <p> With room for more behaviours! </p>
+let circleSize = 10;
 
-        <h2> Extension Material</h2>
+function draw() {
+    circle(mouseX, mouseY, circleSize);
+}
+                </code>
+            </pre>
 
-        <p> Link to an <a href="/SimulationLabs/BoidsExtension"> extension site </a> with scope for learning how to host your own  </p>
+            <h3> Circles 2 - Background Drawn Every Frame </h3>
+            
+            <div id="Circles2Container"></div>
 
-        <h2> Further Reading </h2>
+            <pre>
+                <code class="language-js">
+function setup() {
+    createCanvas(400, 400);
+}
 
-        <ul>
-            <li> <a href="https://www.youtube.com/watch?v=yGhfUcPjXuE"> Dear Game Developers, Stop Messing This Up! </a> - YT Video on delta-time and basic physics </li>
-            <li> <a href="https://natureofcode.com/"> Nature of Code </a> - A book by Daniel Shiffman which these labs take inspiration from! It features a section on boids and many more simulations of things from nature (highly recommend) </li>
-            <li> <a href="https://www.youtube.com/watch?v=bqtqltqcQhw">Coding Adventure: Boids</a> - Sebastian Lague's brilliant video on boids is the main inspiration for this lab! He takes boids into 3D and explores a raycasting approach to collision avoidance  </li>
-        </ul>
+let circleSize = 10;
+
+function draw() {
+    background(222, 222, 222); // background drawn every frame!
+    circle(mouseX, mouseY, circleSize);
+}
+                </code>
+            </pre>
+
+            <h3> Task </h3>
+
+
+            <h2> Autonomous Agents Intro </h2>
+
+            <p> Applying forces, basic goals </p>
+
+            <h2> Creating boid flocks </h2>
+
+            <p> With room for more behaviours! </p>
+
+            <h2> Extension Material</h2>
+
+            <p> Link to an <a href="/SimulationLabs/BoidsExtension"> extension site </a> with scope for learning how to host your own  </p>
+
+            <h2> Further Reading </h2>
+
+            <ul>
+                <li> <a href="https://www.youtube.com/watch?v=yGhfUcPjXuE"> Dear Game Developers, Stop Messing This Up! </a> - YT Video on delta-time and basic physics </li>
+                <li> <a href="https://natureofcode.com/"> Nature of Code </a> - A book by Daniel Shiffman which these labs take inspiration from! It features a section on boids and many more simulations of things from nature (highly recommend) </li>
+                <li> <a href="https://www.youtube.com/watch?v=bqtqltqcQhw">Coding Adventure: Boids</a> - Sebastian Lague's brilliant video on boids is the main inspiration for this lab! He takes boids into 3D and explores a raycasting approach to collision avoidance  </li>
+            </ul>
+        </section>
     </body>
 </html>
