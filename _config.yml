@@ -18,13 +18,13 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Simulation Labs Pages
-email: Edward.Denton@warwick.ac.uk
+title: Simulation Labs 
+email:
 description: >- # this means to ignore newlines until "baseurl:"
-  Lab Pages for the Simulation Labs for UWCS 
+  Simulation Labs Notes
 baseurl: "/SimulationLabs" # the subpath of your site, e.g. /blog
 url: "https://uwcs.github.io/SimulationLabs" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: NA
+twitter_username:
 github_username:  https://github.com/RexMortem
 
 # Build settings
