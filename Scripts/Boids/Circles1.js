@@ -1,12 +1,14 @@
-function setup() {
-    var cnv = createCanvas(400, 400);
-    cnv.parent('Circles1Container');
+let circles1 = new p5( (sketch) => {
+    sketch.setup = () => {
+        let cnv = sketch.createCanvas(400, 400);
+        cnv.parent('Circles1Container');
 
-    background(222, 222, 222);
-  }
-  
-  var circleSize = 10;
-  
-  function draw() {
-    circle(mouseX, mouseY, circleSize);
-  }
+        sketch.background(222, 222, 222);
+    }
+
+    var circleSize = 10;
+    
+    sketch.draw = () => {
+        sketch.circle(sketch.mouseX, sketch.mouseY, circleSize);
+    }
+})

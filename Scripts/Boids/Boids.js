@@ -1,33 +1,35 @@
-var x = 200;
-var y = 200;
+let boids = new p5((sketch) => {
+    var x = 200;
+    var y = 200;
 
-function addRandomDirection(){
-    let randomChoice = floor(random(4));
+    function addRandomDirection(){
+        let randomChoice = Math.floor(Math.random() * 4);
 
-    switch(randomChoice){
-        case 0:
-            x++;
-            break;
-        case 1:
-            x--;
-            break;
-        case 2:
-            y++;
-            break;
-        default:
-            y--;
+        switch(randomChoice){
+            case 0:
+                x++;
+                break;
+            case 1:
+                x--;
+                break;
+            case 2:
+                y++;
+                break;
+            default:
+                y--;
+        }
     }
-}
 
-function setup(){
-    let cnv = createCanvas(400, 400);
-    cnv.parent('BoidContainer');
+    sketch.setup = () => {
+        let cnv = sketch.createCanvas(400, 400);
+        cnv.parent('BoidContainer');
 
-    background(140, 205, 230);
-}
+        sketch.background(140, 205, 230);
+    }
 
-function draw(){
-    stroke(245, 175, 0); // pen colour 
-    addRandomDirection(); // change state
-    point(x,y); // draw state
-}
+    sketch.draw = () => {
+        sketch.stroke(245, 175, 0); // pen colour 
+        addRandomDirection(); // change state
+        sketch.point(x, y); // draw state
+    }
+});

@@ -22,6 +22,7 @@
         <script src="/SimulationLabs/Scripts/Boids/Boids.js" defer></script>
         <script src="/SimulationLabs/Scripts/Boids/Circles1.js" defer></script>
         <script src="/SimulationLabs/Scripts/Boids/Circles2.js" defer></script>
+        <script src="/SimulationLabs/Scripts/Boids/RainbowCircles.js" defer></script>
     </head>
 
     <body>
@@ -66,20 +67,20 @@
                 <li> <strong> draw() </strong> which is a function executed every frame (by default, about 60 times a second) </li>
             </ul>
 
-            We create the canvas (arguments being the width and length) in <strong> setup() </strong> since we only need to do this once, and draw background (which you can call with RGB colour arguments as below) is called every frame in <strong> draw()</strong>! 
+            We create the canvas (arguments being the width and length) in <strong> setup() </strong> since we only need to do this once, and <strong>background()</strong> (which you can call with RGB colour arguments as below) is called every frame in <strong> draw()</strong>! 
 
             <pre>
                 <code class="language-js">
 function draw() {
-    redV = 128
-    greenV = 12
-    blueV = 128 
+    let redV = 128; // if you're new to js, use "let" to declare variables
+    let greenV = 12; 
+    let blueV = 128;
     background(redV, greenV, blueV); // my favourite colour; purple!
 }
                 </code>
             </pre>
 
-            This difference matters when it comes to sketches with changing elements. See the difference in the following sketch, where we draw a circle at the mouse's position every frame. 
+            This difference matters when it comes to sketches with changing elements; see the difference in the following sketches, where we draw a circle at the mouse's position every frame. One draws a background once, and the other draws a background every frame. 
 
             <h3> Circles 1 - Background Drawn Once </h3>
             
@@ -89,16 +90,18 @@ function draw() {
                 <code class="language-js">
 function setup() {
     createCanvas(400, 400);
-    background(222, 222, 222);
+    background(222, 222, 222); // called just once!
 }
 
-let circleSize = 10;
+const circleSize = 10; // js also has constants!! The value of variable "circleSize" cannot be changed
 
 function draw() {
     circle(mouseX, mouseY, circleSize);
 }
                 </code>
             </pre>
+
+            <emph> Background is called just once - at the start - and many circles are drawn over it. </emph>
 
             <h3> Circles 2 - Background Drawn Every Frame </h3>
             
@@ -119,8 +122,27 @@ function draw() {
                 </code>
             </pre>
 
-            <h3> Task </h3>
+            <emph> Background is called every frame and essentially clears the screen by drawing the background over everything in the previous frame. </emph>
 
+
+            <h3> Task: Multicolour </h3>
+
+            We can use the <strong>stroke()</strong> and <strong>fill()</strong> functions to change the line colour and fill colour of the circles (and any shape we draw) like below:
+            
+            <pre>
+                <code class="language-js">
+stroke(255, 0, 0); // outlines are now red!
+fill(0, 255, 0); // areas are now green!
+                </code>
+            </pre>
+
+            <p><strong>Part 1:</strong> Modify the <emph>Circles 2</emph> sketch to have colours of your choice. </p>
+            
+            <p><strong>Part 2:</strong> Modify the <emph>Circles 1</emph> sketch to have constantly changing colour like so: </p>
+            
+            <div id="CirclesRainbowContainer"></div>
+            
+            <strong> <emph>Hint:</emph></strong> The range of colours is 0-255 (anything >255 will be interpreted as 255), so you will have to use modulus (<strong>%</strong>) or if statements to ensure RGB values don't go outside that range!
 
             <h2> Autonomous Agents Intro </h2>
 
