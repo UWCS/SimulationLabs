@@ -23,6 +23,7 @@
         <script src="/SimulationLabs/Scripts/Boids/Circles1.js" defer></script>
         <script src="/SimulationLabs/Scripts/Boids/Circles2.js" defer></script>
         <script src="/SimulationLabs/Scripts/Boids/RainbowCircles.js" defer></script>
+        <script src="/SimulationLabs/Scripts/Boids/RainbowTrails.js" defer></script>
     </head>
 
     <body>
@@ -40,15 +41,20 @@
             </ul>
 
             <h2> What you'll create </h2>
+            
+            <p> The aim of this workshop is to recreate boids, which are a simulation of birds and other flocking entities (like fishes). 
+                Hopefully, you'll be able to apply this in your own projects! 
+                Along the way, we'll learn a little bit about p5.js, rendering, and physics.   </p>
 
             <div id="BoidContainer"></div>
 
-            <emph> (This is not an actual boids sketch btw - this is a random stepper) </emph>
+            <em> (This is not an actual boids sketch btw - this is a random stepper) </em>
 
-            <h2> Prereqs </h2>
+            <h2> Prerequisites </h2>
             <ul>
                 <li> Know how to program using a procedural language e.g. Python, Java, C#, JavaScript etc. </li>
                 <li> Basic OOP i.e. you know what a class is </li>
+                <li> Some physics knowledge - vectors, position, velocity, acceleration </li>
             </ul>
 
             <p> We will be coding in JavaScript but don't worry about knowing the ins and outs of the language; you should be able to pick it up as we go! </p>
@@ -62,6 +68,9 @@
                 <li> <p> Open a new sketch (File->New) </p> </li>
             </ol>
             
+            <h3> What is a sketch? </h3>
+            <emph>Insert brief description (couple lines) on what a sketch is, and what frames are... </emph>
+
             <p> Your new sketch should have 2 functions: </p>
             
             <ul>
@@ -73,6 +82,10 @@
 
             <pre>
                 <code class="language-js">
+function setup() {
+    createCanvas(400, 400);
+}
+
 function draw() {
     let redV = 128; // if you're new to js, use "let" to declare variables
     let greenV = 12; 
@@ -81,8 +94,9 @@ function draw() {
 }
                 </code>
             </pre>
-
-            This difference matters when it comes to sketches with changing elements; see the difference in the following sketches, where we draw a circle at the mouse's position every frame. One draws a background once, and the other draws a background every frame. 
+            <p> <em> If you're unfamiliar with RGB values, go <a href="/SimulationLabs/Docs/RGBValues">here</a> </em> </p>
+            
+            <p>This difference matters when it comes to sketches with changing elements; see the difference in the following sketches, where we draw a circle at the mouse's position every frame. One draws a background once, and the other draws a background every frame. </p>
 
             <h3> Circles 1 - Background Drawn Once </h3>
             
@@ -104,7 +118,9 @@ function draw() {
             </pre>
 
             <emph> Background is called just once - at the start - and many circles are drawn over it. </emph>
-
+            
+            <p>Note the use of <strong>mouseX</strong> and <strong>mouseY</strong> which are variables updated every frame! </p>
+            
             <h3> Circles 2 - Background Drawn Every Frame </h3>
             
             <div id="Circles2Container"></div>
@@ -146,6 +162,19 @@ fill(0, 255, 0); // areas are now green!
             
             <strong> <emph>Hint:</emph></strong> The range of colours is 0-255 (anything >255 will be interpreted as 255), so you will have to use modulus (<strong>%</strong>) or if statements to ensure RGB values don't go outside that range!
             
+            <h2> Using Arrays and Objects </h2>
+
+            Useful: <a href="https://p5js.org/reference/#Shape"> Not sure which chapter to put this in yet...</a>
+
+            Useful: use framerate to debug 
+
+            <h3> Task: Rainbow Trails </h3>
+
+            <div id="RainbowTrailsContainer"></div>
+
+            <h2> May the Force be with you </h2>
+            
+            <p> To make our boids move,  </p>
             <h2> Autonomous Agents Intro </h2>
 
             <p> Applying forces, basic goals </p>
@@ -154,10 +183,14 @@ fill(0, 255, 0); // areas are now green!
 
             <p> With room for more behaviours! </p>
 
+            <h2> Next Time... </h2>
+
+            Next workshop, we'll be looking at using procedural generation. 
+
             <h2> Extension Material</h2>
 
             <p> Link to an <a href="/SimulationLabs/BoidsExtension"> extension site </a> with scope for learning how to host your own  </p>
-
+            
             <h2> Further Reading </h2>
 
             <ul>
