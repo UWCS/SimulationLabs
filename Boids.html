@@ -23,6 +23,7 @@
         <script src="/SimulationLabs/Scripts/Boids/Circles1.js" defer></script>
         <script src="/SimulationLabs/Scripts/Boids/Circles2.js" defer></script>
         <script src="/SimulationLabs/Scripts/Boids/RainbowCircles.js" defer></script>
+        <script src="/SimulationLabs/Scripts/Boids/GrowingTrails.js" defer></script>
         <script src="/SimulationLabs/Scripts/Boids/RainbowTrails.js" defer></script>
     </head>
 
@@ -164,7 +165,118 @@ fill(0, 255, 0); // areas are now green!
             
             <h2> Using Arrays and Objects </h2>
 
-            Useful: <a href="https://p5js.org/reference/#Shape"> Not sure which chapter to put this in yet...</a>
+            <p> To store our boids, we're going to use arrays and OOP. We'll have a look at how to do this in JavaScript using a modified version of our Circles 2 sketch, to create fixed-length trails (with circles of changing size) like below: </p>
+
+            <div id="GrowingTrailsContainer"></div>
+            <em> A trail with a length of 20 circles, where the circles grow to a max size then reset </em>
+
+            <p> 
+                To create a fixed-length trail, we can't just not refresh the background every frame; this will lead to circles from before 20-circles-ago staying!
+                We'll have to save the previous 20 circles, and then draw them every frame. To do this, we'll need: </p>
+
+            <ul>
+                <li>An array storing the circles </li>
+                <li>An object representing a circle, which stores the position and size of the circle </li>
+            </ul>
+            
+            <p> Let's create a class for that object first! </p> 
+            
+            <h3> Coding the Class </h3>
+
+            <pre>
+                <code class="language-js">
+class trailCircle {
+    constructor(position, size){
+        this.position = position;
+        this.size = size;
+    }
+}
+                </code>
+            </pre>
+            
+            <p> Every class has a constructor which is the function that runs whenever an object is created; we can define the constructor for a class as above. 
+                Note the use of <strong>this</strong> inside the constructor! It's a variable for the object being created.
+            </p>
+
+            <p> You might be wondering <em>what</em> position will be, since it's a single variable to represent both x and y. 
+                Fortunately, p5.js provides us with the Vector class which allows us to bundle x and y into an object, and gives us a lot of methods to manipulate them as vectors!
+                Have a look at the methods on the handy <a href="https://p5js.org/reference/#Vector">p5 reference</a>.
+                We can use the <strong>createVector()</strong> method to make one!
+            </p>
+            
+            <br>
+            <p>Now we can create an instance of trailCircle like so:</p>
+
+            <pre>
+                <code class="language-js">
+let tc1 = new trailCircle(createVector(100,100), 100);
+                </code>
+            </pre>
+            
+            <p>Now we can draw the object to the screen by writing:</p>
+
+            <pre>
+                <code class="language-js">
+circle(tc1.position.x, tc1.position.y, tc1.size);
+                </code>
+            </pre>
+
+            <p>It'd be nice to put this drawing stuff into one place though, so that if we wanted to change how circles are rendered, we only need to change it in one place. 
+                We might also introduce other shapes like squares, which may have a different way of rendering its shape! 
+                Let's add a draw method to our class. </p>
+                
+            <pre>
+                <code class="language-js">
+class trailCircle {
+    constructor(position, size){
+        this.position = position;
+        this.size = size;
+    }
+    
+    draw(){
+        circle(this.position.x, this.position.y, this.size);
+    }
+}
+                </code>
+            </pre>
+            
+            <h3> Storing the trail </h3>
+
+            <p>We can declare an array for the trail and a trail length pretty easily: </p>
+
+            
+            <pre>
+                <code class="language-js">
+const trails = [];
+const trailLength = 20;
+                </code>
+            </pre>
+            
+            <p> Note <strong>const</strong> here doesn't mean an uneditable array; you can insert and remove from the array, but you can't reassign the <em>trails</em> variable to something else. 
+                It will forever be that array, but you can edit the array as you wish. </p>
+            
+            <p> Now let's create a method updateTrail to add the current circle to the trail; we'll have a variable <em>circleSize</em> for the current size of the circle that we can reference. </p>
+            
+            <br>
+            <p>Our method will need to:</p>
+            <ul>
+                <li></li>
+            </ul>
+            <pre>
+                <code class="language-js">
+function updateTrail(){
+    if(trails.length == trailLength){ // should remove one
+        trails.shift(); // this deletes the first element, and shifts the rest down
+    }  
+    
+    // create trail object to insert
+    let trailObj = new trailObject(createVector(mouseX, mouseY), circleSize);
+    trails.push(trailObj);
+}
+                </code>
+            </pre>
+
+            <p>You can see JavaScript's array methods <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift">here</a></p>
 
             Useful: use framerate to debug 
 
@@ -175,13 +287,32 @@ fill(0, 255, 0); // areas are now green!
             <h2> May the Force be with you </h2>
             
             <p> To make our boids move,  </p>
+
+            <a href="https://p5js.org/reference/p5/deltaTime/"> delta time docs </a>
+
             <h2> Autonomous Agents Intro </h2>
 
-            <p> Applying forces, basic goals </p>
+            <p> Simple individual steering behaviours </p>
+            
+            <p> Key things to mention: </p>
 
-            <h2> Creating boid flocks </h2>
+            <ul>
+                
+            </ul>
+            <h2> Creating boids </h2>
+            
+            <ul>
+                <li> Limit to agent's perception (think about cs118 enjoyers) </li>
+                <li> No leader (could you make a version with a leader?) </li>
+                <li> Emergent Behaviour </li>
+                <li> Nonlinearity </li>
+                <li> Competition and Cooperation </li>
+                <li> Feedback </li>
+            </ul>
 
             <p> With room for more behaviours! </p>
+
+            
 
             <h2> Next Time... </h2>
 
@@ -194,6 +325,7 @@ fill(0, 255, 0); // areas are now green!
             <h2> Further Reading </h2>
 
             <ul>
+                <li> <a href="https://www.red3d.com/cwr/papers/1987/SIGGRAPH87.pdf"> Flocks, Herds, and Schools: A Distributed Behavioural Model</a> - The original boids paper</li>
                 <li> <a href="https://www.youtube.com/watch?v=yGhfUcPjXuE"> Dear Game Developers, Stop Messing This Up! </a> - YT Video on delta-time and basic physics </li>
                 <li> <a href="https://natureofcode.com/"> Nature of Code </a> - A book by Daniel Shiffman which these labs take inspiration from! It features a section on boids and many more simulations of things from nature (highly recommend) </li>
                 <li> <a href="https://www.youtube.com/watch?v=bqtqltqcQhw">Coding Adventure: Boids</a> - Sebastian Lague's brilliant video on boids is the main inspiration for this lab! He takes boids into 3D and explores a raycasting approach to collision avoidance  </li>
