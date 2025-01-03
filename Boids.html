@@ -18,13 +18,28 @@
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
         <link href="/SimulationLabs/Stylesheets/Default.css" rel="stylesheet">
 
+        <script type="text/x-mathjax-config">
+            MathJax.Hub.Config({
+                tex2jax: {
+                inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+                processEscapes: true
+                }
+            });
+        </script>
+
+        <script src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script>
+
         <!-- Simulations -->
         <script src="/SimulationLabs/Scripts/Boids/Boids.js" defer></script>
         <script src="/SimulationLabs/Scripts/Boids/Circles1.js" defer></script>
         <script src="/SimulationLabs/Scripts/Boids/Circles2.js" defer></script>
         <script src="/SimulationLabs/Scripts/Boids/RainbowCircles.js" defer></script>
+
         <script src="/SimulationLabs/Scripts/Boids/GrowingTrails.js" defer></script>
         <script src="/SimulationLabs/Scripts/Boids/RainbowTrails.js" defer></script>
+
+        <script src="/SimulationLabs/Scripts/Boids/WrongFPSBalls.js" defer></script>
+        <script src="/SimulationLabs/Scripts/Boids/CorrectFPSBalls.js" defer></script>
     </head>
 
     <body>
@@ -45,7 +60,7 @@
             
             <p> The aim of this workshop is to recreate boids, which are a simulation of birds and other flocking entities (like fishes). 
                 Hopefully, you'll be able to apply this in your own projects! 
-                Along the way, we'll learn a little bit about p5.js, rendering, and physics.   </p>
+                Along the way, we'll learn a little bit about p5.js, rendering, and simulating physics. </p>
 
             <div id="BoidContainer"></div>
 
@@ -70,13 +85,19 @@
             </ol>
             
             <h3> What is a sketch? </h3>
-            <emph>Insert brief description (couple lines) on what a sketch is, and what frames are... </emph>
+            
+            <p>A sketch is a small program that will work with p5.js to produce a simulation. 
+                Just like a game, your simulation will have frames (an image of your simulation) and p5.js will aim to show 60 frames a second.
+                You'll be able to code what happens just before a frame is shown, and also code what happens just before the simulation starts! 
+            </p>
+
+            <br>
 
             <p> Your new sketch should have 2 functions: </p>
             
             <ul>
                 <li> <strong> setup() </strong> which is a function executed once at the start </li>
-                <li> <strong> draw() </strong> which is a function executed every frame (by default, about 60 times a second) </li>
+                <li> <strong> draw() </strong> which is a function executed every frame </li>
             </ul>
 
             We create the canvas (arguments being the width and length) in <strong> setup() </strong> since we only need to do this once, and <strong>background()</strong> (which you can call with RGB colour arguments as below) is called every frame in <strong> draw()</strong>! 
@@ -179,7 +200,38 @@ fill(0, 255, 0); // areas are now green!
                 <li>An object representing a circle, which stores the position and size of the circle </li>
             </ul>
             
-            <p> Let's create a class for that object first! </p> 
+            <p> Let's get the growing circle part out of way; this part isn't important, but the rest of the code makes less sense without it: </p>
+            
+            <pre>
+                <code class="language-js">
+function setup() {
+    createCanvas(400, 400);
+}
+
+const maxCircleSize = 15;
+const minCircleSize = 5;
+let circleSize = 5;
+
+function draw() {
+    background(222, 222, 222); 
+
+    // update circleSize
+    circleSize++;
+
+    if(circleSize > maxCircleSize){
+        circleSize = minCircleSize;
+    }
+
+    // draw circle 
+    circle(mouseX, mouseY, circleSize);
+}
+                </code>
+            </pre>
+            <em>Could also use modulo to loop the circleSize, but the if statement is more readable here</em>
+            
+            <p>Don't worry about how this is performed; it's more important that you understand how objects, classes, and arrays work in JavaScript. </p>
+
+            <p> Now let's create a class for the circle! </p> 
             
             <h3> Coding the Class </h3>
 
@@ -244,7 +296,6 @@ class trailCircle {
 
             <p>We can declare an array for the trail and a trail length pretty easily: </p>
 
-            
             <pre>
                 <code class="language-js">
 const trails = [];
@@ -255,13 +306,17 @@ const trailLength = 20;
             <p> Note <strong>const</strong> here doesn't mean an uneditable array; you can insert and remove from the array, but you can't reassign the <em>trails</em> variable to something else. 
                 It will forever be that array, but you can edit the array as you wish. </p>
             
-            <p> Now let's create a method updateTrail to add the current circle to the trail; we'll have a variable <em>circleSize</em> for the current size of the circle that we can reference. </p>
+            <p> Now let's create a method updateTrail to add the current circle to the trail; remember that we have <em>circleSize</em> from the growing circle part of the sketch. </p>
             
             <br>
             <p>Our method will need to:</p>
             <ul>
-                <li></li>
+                <li>Create a new trail object, and add it to the array</li>
+                <li>If the array is full, then remove the oldest circle in the array</li>
             </ul>
+
+            <p> I'll arbitrarily decide that the circles will be added to the end of the array, so therefore the oldest circles will be in the front of the array. Here's one implementation of the specification above:</p>
+
             <pre>
                 <code class="language-js">
 function updateTrail(){
@@ -276,17 +331,147 @@ function updateTrail(){
                 </code>
             </pre>
 
-            <p>You can see JavaScript's array methods <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift">here</a></p>
+            <p>This might be a little confusing because of the use of <em>shift()</em> and <em>push()</em>; they're just JavaScript methods to make our lives easier. 
+                
+                You can see JavaScript's array methods <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/shift">here</a>!
+            </p>
 
-            Useful: use framerate to debug 
+            <p> We do need to call updateTrail() in draw; let's call it just after we draw the current circle. </p>
+            
+            <pre>
+                <code class="language-js">
+function draw() {
+    background(222, 222, 222); 
+
+    // update circleSize
+    circleSize++;
+
+    if(circleSize > maxCircleSize){
+        circleSize = minCircleSize;
+    }
+
+    // draw circle 
+    circle(mouseX, mouseY, circleSize);
+
+    // update stuff
+    updateTrail();
+}
+                </code>
+            </pre>
+            <em>Our updated draw method</em>
+            
+            <br>
+
+            <p> Okay great, now we just need to display the trail! </p>
+
+            <h3> Displaying the trail</h3>
+
+            <p>All we have to do is loop through our array of trail circles and display each one. I want to draw the oldest first, so I'll iterate from the start to the end of the array. </p>
+
+            <pre>
+                <code class="language-js">
+function drawTrail(){
+    for(let i = 0; i &lt; trails.length; i++){
+        let trailObj = trails[i];
+        
+        // draw the circle!
+        trailObj.draw();
+    }
+}
+                </code>
+            </pre>
+
+            <p> And now we'll call <em>drawTrail()</em> before the current circle (so we don't draw the trail over the current circle!) </p>
+
+            <pre>
+                <code class="language-js">
+function draw() {
+    background(222, 222, 222); // background drawn every frame!
+
+    // update circleSize
+    circleSize++;
+
+    if(circleSize > maxCircleSize){
+        circleSize = minCircleSize;
+    }
+
+    // draw stuff
+    drawTrail();
+    circle(mouseX, mouseY, circleSize);
+
+    // update stuff
+    updateTrail();
+}
+                </code>
+            </pre>
+            <em>Our final version of draw()!</em>
+
+            <h3> Full Code for Growing Trails </h3>
+            
+            <p> You can have a look at the full program <a href="https://editor.p5js.org/RexMortem/sketches/hJOgrWgry">here</a></p>
 
             <h3> Task: Rainbow Trails </h3>
 
+            <p> With the help of the Growing Trails code, modify your solution to the task Multicolour to create rainbow trails. </p>
+
+            <p> You should keep the colour changing code, and store the previous 10 or so circles! Your simulation should look something like this:</p>
+
             <div id="RainbowTrailsContainer"></div>
+
+            <p><strong>Tip:</strong> Once you've finished your sketch, sometimes it's a little hard to see whether the trail circles have the colour and position that they should. You can verify this more easily by slowing down your simulation! Use <em>frameRate(10)</em> in setup to set your sketch to run at 10 frames per second. </p>
 
             <h2> May the Force be with you </h2>
             
-            <p> To make our boids move,  </p>
+            <p> To make our boids move, we're going to use forces. We know from physics that $F=ma$, but we're going to simplify things by ignoring mass and jump straight to changing acceleration! </p>
+
+            <p> Let's try modelling a simple force; a constant acceleration to the right. </p>
+
+            <h3> Accelerating Ball </h3>
+
+            <p> First, let's establish a class for this ball to make things clear to ourselves. </p>
+            
+            <pre>
+                <code class="language-js">
+class Ball {
+    constructor(){
+        this.position = createVector(0,0);
+        this.velocity = createVector(0,0);
+        this.acceleration = createVector(0,0);
+    }
+
+    draw(){
+        circle(this.position.x, this.position.y, 10);
+    }
+}
+                </code>
+            </pre>
+            
+            <p> This is all stuff we've basically done, but we also need a method to simulate all the physics. 
+                From physics, we know that acceleration is the rate of change of velocity, and that velocity is the rate of change of position.
+            </p>
+
+            <br>
+
+            <p> So to simulate our ball's motion, we would: </p>
+
+            <ol>
+                <li> Update the velocity with acceleration </li>
+                <li> Update the position with velocity </li>
+            </ol>
+
+            <p> As we'll soon see, we have to do this in a <em>very careful</em> way. </p>
+
+            <h3>Enter deltaTime</h3>
+
+            <p>Until now, we've not really considered how long each frame takes. 
+            It'd be reasonable to assume each frame takes about 1/60 seconds to process <em>however</em> each frame takes a slightly different amount of time and, when simulations get more complex, each frame might take a non-slight different amount of time! 
+        
+            </p>
+
+            <div id="WrongFPSBallsContainer"></div>
+
+            <div id="CorrectFPSBallsContainer"></div>
+
 
             <a href="https://p5js.org/reference/p5/deltaTime/"> delta time docs </a>
 
