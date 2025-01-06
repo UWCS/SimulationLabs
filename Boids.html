@@ -446,7 +446,7 @@ class Ball {
                 </code>
             </pre>
             
-            <p> This is all stuff we've basically done, but we also need a method to simulate all the physics. 
+            <p> This is all stuff we've basically done, but we also need a way to simulate all the physics. 
                 From physics, we know that acceleration is the rate of change of velocity, and that velocity is the rate of change of position.
             </p>
 
@@ -461,12 +461,17 @@ class Ball {
 
             <p> As we'll soon see, we have to do this in a <em>very careful</em> way. </p>
 
-            <h3>Enter deltaTime</h3>
+            <h4>Enter deltaTime</h4>
 
             <p>Until now, we've not really considered how long each frame takes. 
             It'd be reasonable to assume each frame takes about 1/60 seconds to process <em>however</em> each frame takes a slightly different amount of time and, when simulations get more complex, each frame might take a non-slight different amount of time! 
-        
             </p>
+            
+            <p>To test this theory, console.log the <em>deltaTime</em> variable inside the <em>draw()</em> function; it will set itself to the time taken to process the previous frame! </p>
+
+            <h4>Using deltaTime</h4>
+
+            <p> We know $v = p/t$ (where ) </p>
 
             <div id="WrongFPSBallsContainer"></div>
 
