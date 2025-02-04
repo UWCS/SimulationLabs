@@ -42,8 +42,6 @@
 
         <!-- Page content -->
         <div class="section">
-            <p> This is the noise page </p>
-           
             <h2> What you'll create </h2>
             
             <p> The aim of this workshop is understand some applications of Perlin Noise, and use it to create some colourful terrain!
@@ -70,12 +68,10 @@
                 Just like a game, your simulation will have frames (an image of your simulation) and p5.js will aim to show 60 frames a second.
                 You'll be able to code what happens on certain events e.g. just before a frame is shown, just before the simulation starts, when the mouse is clicked.
 
-                <br>
+                <br><br>
 
                 In this lab, since we're just drawing an image, we'll only concern ourselves with drawing before the simulation starts and when the mouse is clicked.
             </p>
-
-            <br>
 
             <p> Your new sketch should have 2 functions: </p>
             
@@ -100,6 +96,8 @@ function setup() {
             </pre>
             <em> RGB values have R,G,B values ranging from 0-255 </em>
             
+            <br>
+
             <p><strong>Mini-Task:</strong> Try running the above simulation! Maybe change the variables to display your own favourite colour. </p>
 
             <h2> Creating Random Noise </h2>
@@ -107,6 +105,8 @@ function setup() {
             <div id="RandomHeightMap"></div>
             <em>Click to generate new random noise</em>
             
+            <br>
+
             <p>Let's dive straight into generating random noise! We'll need to know a couple things: </p>
 
             <ol>
@@ -169,8 +169,6 @@ function setup() {
             If we're only using grayscale colours, then we can provide just a single value (to represent the brightness or "value" of the colour) e.g. 255 for pure white, 0 for pure black. 
         </p>
 
-        <br>
-
         <p>Using this knowledge, can you guess what the following code does?</p>
         
         <pre>
@@ -193,7 +191,7 @@ function setup() {
         <h3>Random Values</h3>
 
         <p>A key thing to remember about p5.js is that ultimately, it is still JavaScript. Therefore, we can use JavaScript functions and libraries with p5.js. </p>
-        <br>
+
         <p>To handle randomness, we'll use js' Math library; in particular, the function <strong>Math.random()</strong>! Let's use the JavaScript console to test it out. </p>
 
         <pre>
@@ -311,7 +309,6 @@ stroke(colour); // stroke accepts the colour object directly (instead of number 
             After all, terrain isn't perfectly smooth in nature!
         </p>
 
-        <br>
 
         <p>You can add this granular detail by adding layers of perlin noise together; each of these layers being called "octaves". 
             Typically, you'll have a large amplitude perlin noise wave which describes the general overall shape, 
@@ -319,13 +316,10 @@ stroke(colour); // stroke accepts the colour object directly (instead of number 
             These smaller waves usually have higher frequency, which will give the islands a distinct roughness. 
         </p>
 
-        <br> 
 
         <p> You can increase the number of octaves and how much the smaller waves contribute to the noise by using p5's <strong>noiseDetail()</strong> function.
         Read up on the details <a href="https://p5js.org/reference/p5/noiseDetail/">here</a>.</p>
         
-        <br>
-
         <p>You can also add more "detail" to the islands by creating multiple threshold levels, like in the example at the top of this webpage! An example of a more complicated threshold colour function: </p>
         
         <pre>
@@ -357,7 +351,6 @@ function getColour(noiseVal){
             You can take my generator(s) (displayed at the top of the page) as inspiration, but I'm sure you'll be able to create a better looking generator than mine. 
         </p>
 
-        <br>
 
         <p>You can view the code for my two generators here:</p>
         <ul>
@@ -376,11 +369,6 @@ function getColour(noiseVal){
             <li>Adding trees e.g. with poisson-disc sampling </li>
             <li>Structure generation</li>
         </ul>
-
-        <ol>
-            <li>Add fragments/headers </li>
-            <li></li>
-        </ol>
         </section>
     </body>
 </html>
