@@ -455,8 +455,8 @@ class Ball {
             <p> So to simulate our ball's motion, we would: </p>
 
             <ol>
-                <li> Update the velocity with acceleration </li>
-                <li> Update the position with velocity </li>
+                <li> Update the velocity according to acceleration </li>
+                <li> Update the position according to velocity </li>
             </ol>
 
             <p> As we'll soon see, we have to do this in a <em>very careful</em> way. </p>
@@ -464,16 +464,52 @@ class Ball {
             <h4>Enter deltaTime</h4>
 
             <p>Until now, we've not really considered how long each frame takes. 
-            It'd be reasonable to assume each frame takes about 1/60 seconds to process <em>however</em> each frame takes a slightly different amount of time and, when simulations get more complex, each frame might take a non-slight different amount of time! 
+            It'd be reasonable to assume each frame takes about 1/60 seconds to process <em>however</em> each frame <strong>actually</strong> takes a slightly different amount of time. When simulations get more complex, this difference in time may increase! 
             </p>
             
-            <p>To test this theory, console.log the <em>deltaTime</em> variable inside the <em>draw()</em> function; it will set itself to the time taken to process the previous frame! </p>
+            <p>To test this theory, console.log the <em>deltaTime</em> variable inside the <em>draw()</em> function in a blank sketch; deltaTime will be set to the time taken to process the previous frame! You should see differences in the values logged despite not much going on.</p>
+            
+            <h4>Why should we care?</h4>
 
-            <h4>Using deltaTime</h4>
+            <p>Imagine two different devices: device A and device B. A runs slowly and can only handle the simulation running at 20 FPS, and B runs quickly and can handle the simulation running at its intended 60 FPS.
+                
+                If we <em>don't</em> use deltaTime, then B will run the simulation 3 times as quickly as A! If this is a game, then A will be running the game at a third of the speed
+                it's meant to be played at. Imagine playing your favourite platformer where everything is 3 times slower!
+            </p>
 
-            <p> We know $v = p/t$ (where ) </p>
+            <p>Of course, this doesn't matter massively for simple simulations </p>
 
+            <h4>Using deltaTime (Incorrectly)</h4>
+
+            <p> We know acceleration is the rate of change of velocity, and velocity is the rate of change of position so it'd be reasonable to write our motion simulation as: </p>
+
+            <pre>
+                <code class="language-js">
+simulate(){
+    velocity = velocity + (deltaTime * acceleration);
+    position = position + (deltaTime * velocity);
+}
+                </code>
+            </pre>
+            
+            <p>Or in p5.js code:</p>
+
+            <pre>
+                <code class="language-js">
+simulate(){
+    this.velocity.add(p5.Vector.mult(this.acceleration, deltaTime));  
+    this.position.add(p5.Vector.mult(this.velocity, deltaTime));
+}
+                </code>
+            </pre>
+            <em>Again, if you're confused by p5.js code, look at the <a href="https://p5js.org/reference/#vector">reference</a></em>
+            
+            <p>This looks and feels correct, but there's a slight problem! Here is a simulation using this method, with </p>
             <div id="WrongFPSBallsContainer"></div>
+            <em></em>
+            <h4>Problem </h4>
+
+            <h4>Using deltaTime (Correctly)</h4>
 
             <div id="CorrectFPSBallsContainer"></div>
 
