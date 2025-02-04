@@ -32,6 +32,9 @@
         <!-- Simulations -->
         <script src="/SimulationLabs/Scripts/Noise/RandomHeightMap.js" defer></script>
         <script src="/SimulationLabs/Scripts/Noise/NoiseHeightMap.js" defer></script>
+        <script src="/SimulationLabs/Scripts/Noise/SmoothNoiseHeightMap.js" defer></script>
+        <script src="/SimulationLabs/Scripts/Noise/DesertIslands.js" defer></script>
+        <script src="/SimulationLabs/Scripts/Noise/DetailedDesertIslands.js" defer></script>
     </head>
 
     <body>
@@ -47,14 +50,13 @@
                 Hopefully, you'll be able to apply this in your own projects! 
                 Along the way, we'll learn a little bit about p5.js, rendering, and simulating physics. </p>
 
-            <div id="BoidContainer"></div>
-
-            <em> (This is not an actual boids sketch btw - this is a random stepper) </em>
+            <div id="DetailedDesertIslands"></div>
+            <em> Click to generate a new map </em>
 
 
             <p> We will be coding in JavaScript but don't worry about knowing the ins and outs of the language; you should be able to pick it up as we go! </p>
 
-            <h2> Introduction to p5.js </h2>
+            <h2> Using p5.js </h2>
             
             We will be using JavaScript and a library called <strong> p5.js</strong>, made by the lovely <a href="https://processingfoundation.org/"> Processing Foundation</a>.
             
@@ -99,7 +101,7 @@ function setup() {
             
             <p><strong>Mini-Task:</strong> Try running the above simulation! Maybe change the variables to display your own favourite colour. </p>
 
-            <h3> Creating Random Noise </h3>
+            <h2> Creating Random Noise </h2>
 
             <div id="RandomHeightMap"></div>
             <em>Click to generate new random noise</em>
@@ -114,7 +116,7 @@ function setup() {
 
             <p>Let's tackle (1) first!</p>
 
-            <h4>Pixels</h4>
+            <h3>Pixels</h3>
 
             <pre>
                 <code class="language-js">
@@ -187,7 +189,7 @@ function setup() {
         
         <p><strong>Mini-Task:</strong> Run the above simulation, and see if you guessed what it does correctly! </p>
 
-        <h4>Random Values</h4>
+        <h3>Random Values</h3>
 
         <p>A key thing to remember about p5.js is that ultimately, it is still JavaScript. Therefore, we can use JavaScript functions and libraries with p5.js. </p>
         <br>
@@ -232,7 +234,7 @@ function setup() {
         </pre>
         <em>Generally, taking this out into its own function for this is a good idea; especially since this function's sole purpose is drawing random noise </em>
 
-        <h3>Perlin Noise</h3>
+        <h2>Perlin Noise</h2>
 
         <p>Okay so we've programmed <em>random noise</em> which is "incoherent" noise - you can have sharp constrasts between neighbouring pixels. 
             If we want nice smooth gradients, then we can use perlin noise! </p>
@@ -254,8 +256,130 @@ function setup() {
         <image src="/SimulationLabs/Images/Noise/FrequentSamplingNoise.PNG"></image>
 
         <p>From the above, we can see that the values sampled are <em>a lot closer</em>; you can think of this as sampling the 10 points at $x=0.2, 0.4, 0.6 \dots$</p>
+
+        <p> So the general takeaway is that we can generate smoother noise, by sampling more frequently. How do we do that? We can just divide x,y before feeding it into the noise function!</p>
+
+        <div id="SmoothNoiseHeightMap"></div>
         
+        <h2>Task: Smooth Noise </h2>
+
+        <p>Use the tools above to generate some smooth perlin noise! Have a variable called the smoothing factor, and change its value to see how the noise varies. </p>
+
+        <h2>Creating Islands</h2>
+
+        <p>We now have the tools to create islands! By designating pixel with noise values past a certain threshold as "land" and the rest as "ocean", we can generate islands. 
+            Since the <strong>noise()</strong> function returns a value between 0 and 1, we should have a threshold value between 0 and 1. </p>
+
+        <pre>
+            <code class="language-js">
+    
+const threshold = 0.55;
+
+function getColour(noiseVal){
+    if(noiseVal > threshold){
+        return color(239, 221, 111); // sandy yellow (island)
+    }else{
+        return color(0, 157, 196); // ocean blue
+    }
+}
+            </code>
+        </pre>
+
+        <p> Note that the above function returns a "colour" object; if you want to work with large p5.js programs, then you should really be using classes and objects. 
+            Now we can use the returned colour object like so:
+        </p>
         
+        <pre>
+            <code class="language-js">
+let colour = getColour(noise(x/sf, y/sf)); // colour object
+stroke(colour); // stroke accepts the colour object directly (instead of number values representing a colour)
+            </code>
+        </pre>
+        
+        <h2> Task: Desert Islands </h2>
+
+        <p>Create desert island generation by modifying your smooth noise task, with the above tools. It should look something like below: </p>
+
+        <div id="DesertIslands"></div>
+        
+        <h3>More Detailed Islands </h3>
+
+        <p>Sometimes, you want more detailed islands; you want the overall shape of the islands to be the same so you have the same smoothness factor, 
+            but you want there to be some more granular detail. You might want your beaches to have some roughness to its terrain. 
+
+            After all, terrain isn't perfectly smooth in nature!
+        </p>
+
+        <br>
+
+        <p>You can add this granular detail by adding layers of perlin noise together; each of these layers being called "octaves". 
+            Typically, you'll have a large amplitude perlin noise wave which describes the general overall shape, 
+            and then you'll have a smaller amplitude perlin noise waves to describe the finer details. 
+            These smaller waves usually have higher frequency, which will give the islands a distinct roughness. 
+        </p>
+
+        <br> 
+
+        <p> You can increase the number of octaves and how much the smaller waves contribute to the noise by using p5's <strong>noiseDetail()</strong> function.
+        Read up on the details <a href="https://p5js.org/reference/p5/noiseDetail/">here</a>.</p>
+        
+        <br>
+
+        <p>You can also add more "detail" to the islands by creating multiple threshold levels, like in the example at the top of this webpage! An example of a more complicated threshold colour function: </p>
+        
+        <pre>
+            <code class="language-js">
+const snowcapThreshold = 0.75;
+const mountainThreshold = 0.6;
+const grassThreshold = 0.4;
+const shallowWaterThreshold = 0.35;
+
+function getColour(noiseVal){
+    if(noiseVal > snowcapThreshold){
+    return color(219, 219, 219); // snowcap white
+    }else if(noiseVal > mountainThreshold){
+        return color(112, 112, 112); // mountain gray
+    }else if (noiseVal > grassThreshold){
+        return color(75, 139, 59); // grass green
+    }else if (noiseVal > shallowWaterThreshold){
+    return color(0, 157, 196); // light blue
+    }else{
+    return color(0, 147, 186); // slightly darker blue
+    }
+}
+            </code>
+        </pre>
+
+        <h2> Final Task: Create your own islands! </h2>
+
+        <p>You have everything you need to create your own amazing terrain generation! 
+            You can take my generator(s) (displayed at the top of the page) as inspiration, but I'm sure you'll be able to create a better looking generator than mine. 
+        </p>
+
+        <br>
+
+        <p>You can view the code for my two generators here:</p>
+        <ul>
+            <li><a href="https://editor.p5js.org/RexMortem/sketches/sk3iSZ_ly">Desert Island Generator</a></li>
+            <li><a href="https://editor.p5js.org/RexMortem/sketches/-9_U5dF6S">Mountainous Terrain Generator</a></li>
+        </ul>
+
+        <p><strong>Tip: </strong> Getting good terrain with perlin noise is often a case of just tweaking your parameters (octaves, amplitude/frequency, smooth factor etc) until they're <em>just</em> right. </p>
+
+        <h2> Going Further </h2>
+
+        <p> If you want to make your generator even cooler, then you can explore more procedural generation techniques. Natural next steps include: </p>
+
+        <ul>
+            <li>Adding rivers (perhaps using perlin worms) </li>
+            <li>Adding trees e.g. with poisson-disc sampling </li>
+            <li>Structure generation</li>
+        </ul>
+
+        <ol>
+            <li>Add fragments/headers </li>
+            <li></li>
+        </ol>
         </section>
     </body>
 </html>
